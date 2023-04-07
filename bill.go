@@ -19,7 +19,7 @@ return b
 }
 
 //format bill - say what struct this applies to, name of func, params and return type
-func (b bill) format() string{
+func (b *bill) format() string{
 fs :="Bill breakdown: \n"
 var total float64 =0
 
@@ -27,8 +27,18 @@ for key, value := range b.items {
 fs += fmt.Sprintf("%-25v ...$%v \n", key +":",value)
 total +=value }
 
-fs += fmt.Sprintf("%-25v ...$%0.2f", "total:", total)
+fs += fmt.Sprintf("%-25v ...$%v \n", "tip:", b.tip)
+total +=b.tip
+
+fs += fmt.Sprintf("%-25v ...$%0.2f", "total:", total+b.tip)
 
 return fs
 }
 
+func (b *bill) updateTip(tip float64)  {
+	b.tip=tip
+}
+
+func (b *bill) addItem(item string, price float64) {
+	b.items[item] = price
+}
